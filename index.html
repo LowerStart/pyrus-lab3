@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pyrus: обзор платформы автоматизации процессов (учебный проект)</title>
+<meta name="description" content="Неофициальная учебная страница-обзор платформы Pyrus для лабораторной работы НИЯУ МИФИ. Официальный сайт: pyrus.com">
+
+<!-- ============ GOOGLE ANALYTICS 4 ============ -->
+<!-- Замените G-XXXXXXXXXX (в двух местах) на ваш Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+
+<!-- ============ ЯНДЕКС МЕТРИКА ============ -->
+<!-- Замените 00000000 на номер счётчика (в двух местах здесь и один раз в скрипте внизу) -->
+<script type="text/javascript">
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();
+  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  ym(00000000, "init", {clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/00000000" style="position:absolute;left:-9999px;" alt=""></div></noscript>
+
+<style>
+  :root{
+    --bg:#ffffff; --text:#1f2933; --muted:#52606d; --navy:#12263f; --line:#d9e0e8;
+    --soft:#f5f7fa; --link:#1e4e8c; --warn-bg:#fff8e6; --warn-line:#e8c766;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Segoe UI",-apple-system,Roboto,Arial,sans-serif;color:var(--text);line-height:1.6;background:var(--bg);font-size:16px}
+  .container{max-width:1040px;margin:0 auto;padding:0 24px}
+  a{color:var(--link)}
+
+  .disclaimer{background:var(--warn-bg);border-bottom:1px solid var(--warn-line);font-size:13px;padding:9px 0;color:#5c4a12}
+  .disclaimer a{color:#5c4a12;font-weight:600}
+
+  header{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
+  .nav{display:flex;justify-content:space-between;align-items:center;height:60px}
+  .brand{font-weight:700;font-size:19px;color:var(--navy);letter-spacing:.2px}
+  .brand small{font-weight:400;color:var(--muted);font-size:13px;margin-left:8px}
+  nav a.link{color:var(--muted);text-decoration:none;margin-left:24px;font-size:14px}
+  nav a.link:hover{color:var(--navy)}
+
+  .btn{display:inline-block;background:var(--navy);color:#fff;border:1px solid var(--navy);padding:12px 24px;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;font-family:inherit}
+  .btn:hover{background:#0b1a2d}
+  .btn.outline{background:#fff;color:var(--navy)}
+  .btn.outline:hover{background:var(--soft)}
+  .btn.sm{padding:8px 16px;font-size:13px}
+
+  .hero{padding:72px 0 64px;border-bottom:1px solid var(--line)}
+  .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:start}
+  .eyebrow{font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  h1{font-size:38px;line-height:1.2;color:var(--navy);margin-bottom:18px;font-weight:700}
+  .lead{font-size:18px;color:var(--muted);margin-bottom:28px;max-width:560px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap}
+  .facts{border:1px solid var(--line);padding:22px 24px;background:var(--soft)}
+  .facts h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;font-weight:600}
+  .facts ul{list-style:none}
+  .facts li{padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .facts li:last-child{border-bottom:none}
+  .facts b{color:var(--navy)}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  section.alt{background:var(--soft)}
+  h2{font-size:28px;color:var(--navy);margin-bottom:8px;font-weight:700}
+  .sub{color:var(--muted);margin-bottom:36px;max-width:680px}
+
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .item{border-top:3px solid var(--navy);background:#fff;padding:20px 22px 24px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .item h3{font-size:17px;color:var(--navy);margin-bottom:8px}
+  .item p{font-size:15px;color:var(--muted)}
+
+  .steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .steps div{counter-increment:s;border-left:2px solid var(--navy);padding-left:16px;font-size:15px;color:var(--muted)}
+  .steps div::before{content:"0" counter(s);display:block;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .steps b{display:block;color:var(--navy);margin-bottom:2px}
+
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
+  th,td{border:1px solid var(--line);padding:14px 16px;text-align:left;vertical-align:top}
+  th{background:var(--navy);color:#fff;font-weight:600}
+  td.plan{font-weight:700;color:var(--navy);white-space:nowrap}
+  td.price{font-weight:700;white-space:nowrap}
+  .src{font-size:13px;color:var(--muted);margin-top:14px}
+
+  .form-box{max-width:560px;border:1px solid var(--line);background:#fff;padding:30px}
+  label{display:block;font-size:14px;font-weight:600;margin:16px 0 6px;color:var(--navy)}
+  input,select,textarea{width:100%;padding:11px 12px;border:1px solid #b8c2cf;border-radius:4px;font-size:15px;font-family:inherit;background:#fff}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--navy);outline-offset:0}
+  .form-box .btn{margin-top:22px}
+  .note{font-size:12px;color:var(--muted);margin-top:14px}
+  #thanks{display:none}
+  #thanks h3{color:var(--navy);margin-bottom:8px}
+
+  details{border:1px solid var(--line);background:#fff;padding:16px 20px;margin-bottom:10px}
+  summary{font-weight:600;cursor:pointer;color:var(--navy)}
+  details p{margin-top:10px;color:var(--muted);font-size:15px}
+
+  footer{padding:36px 0;color:var(--muted);font-size:13px}
+  footer p{margin-bottom:6px}
+
+  @media(max-width:820px){
+    .hero-grid,.grid3,.steps{grid-template-columns:1fr}
+    h1{font-size:28px} h2{font-size:23px}
+    nav a.link{display:none}
+    table,thead,tbody,tr,th,td{display:block}
+    thead{display:none}
+    td{border-top:none}
+    tr{margin-bottom:14px;border-top:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="container nav">
+    <div class="brand">Pyrus <small>обзор платформы</small></div>
+    <nav>
+      <a class="link" href="#features">Возможности</a>
+      <a class="link" href="#process">Внедрение</a>
+      <a class="link" href="#pricing">Тарифы</a>
+      <a class="link" href="#faq">Вопросы</a>
+      <a class="btn sm" style="margin-left:24px" href="#demo" data-cta="header_demo">Запросить материалы</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ПЕРВЫЙ ЭКРАН -->
+  <div class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Автоматизация бизнес-процессов</div>
+        <h1>Согласование документов и заявок в одной системе</h1>
+        <p class="lead">Pyrus — low-code платформа, объединяющая рабочий чат, задачи со сроками и ответственными, согласование документов, Service Desk и CRM. Процессы настраиваются без программистов.</p>
+        <div class="actions">
+          <a class="btn" href="https://pyrus.com/t" target="_blank" rel="noopener" data-out="hero_register">Зарегистрироваться на pyrus.com</a>
+          <a class="btn outline" href="#demo" data-cta="hero_demo">Запросить материалы</a>
+        </div>
+      </div>
+      <aside class="facts">
+        <h3>Коротко о платформе</h3>
+        <ul>
+          <li><b>Развёртывание:</b> облако или серверы клиента (on-premise)</li>
+          <li><b>Тариф:</b> есть бесплатный, без ограничения числа пользователей</li>
+          <li><b>Интеграции:</b> более 50, открытый API и боты</li>
+          <li><b>Соответствие:</b> реестр отечественного ПО, 152-ФЗ</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ВОЗМОЖНОСТИ -->
+  <section id="features">
+    <div class="container">
+      <h2>Возможности</h2>
+      <p class="sub">Основные сценарии, для которых компании используют платформу.</p>
+      <div class="grid3">
+        <div class="item"><h3>Задачи и коммуникации</h3><p>Задача — это рабочий чат со сроком и ответственным. Обсуждение, файлы и решения хранятся в одном месте, любое сообщение находится поиском.</p></div>
+        <div class="item"><h3>Согласование документов</h3><p>Формы и маршруты согласования настраиваются в визуальном конструкторе. История действий и аудит сохраняются в карточке.</p></div>
+        <div class="item"><h3>Service Desk и CRM</h3><p>Обращения из почты, мессенджеров и форм собираются в единой системе. Заявки распределяются по маршрутам автоматически.</p></div>
+        <div class="item"><h3>ЭДО и HR-процессы</h3><p>Работа с документами и кадровые сценарии (найм, заявки сотрудников) на той же платформе без отдельных систем.</p></div>
+        <div class="item"><h3>Интеграции и API</h3><p>Каталог интеграций, открытый API и боты для связи с учётными системами, телефонией и мессенджерами.</p></div>
+        <div class="item"><h3>Мобильный доступ</h3><p>Приложения для iOS и Android, веб-версия. Согласовывать и отвечать на задачи можно с телефона.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ВНЕДРЕНИЕ -->
+  <section id="process" class="alt">
+    <div class="container">
+      <h2>Как начать работу</h2>
+      <p class="sub">Типовая последовательность запуска первого процесса.</p>
+      <div class="steps">
+        <div><b>Регистрация</b>Создание аккаунта компании на бесплатном тарифе.</div>
+        <div><b>Форма</b>Описание документа или заявки в конструкторе форм.</div>
+        <div><b>Маршрут</b>Настройка этапов, ответственных и сроков.</div>
+        <div><b>Запуск</b>Приглашение сотрудников, подключение интеграций.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТАРИФЫ -->
+  <section id="pricing">
+    <div class="container">
+      <h2>Тарифы</h2>
+      <p class="sub">Сводка из публичных источников на 21.11.2026. Для расчёта в учебной работе. Актуальные условия всегда на официальной странице тарифов.</p>
+      <table>
+        <thead>
+          <tr><th>Тариф</th><th>Стоимость</th><th>Состав</th><th>Для кого</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="plan">Бесплатный</td>
+            <td class="price">0 ₽</td>
+            <td>Неограниченное число пользователей и задач, 1 ГБ файлов, конструктор форм и маршрутов (до 50 задач по формам), поиск, мобильные приложения, история и аудит</td>
+            <td>Знакомство с платформой, небольшие команды</td>
+          </tr>
+          <tr>
+            <td class="plan">Платный («Облачный»)</td>
+            <td class="price">от 415 ₽ за пользователя в месяц</td>
+            <td>Всё из бесплатного, плюс неограниченное число задач по формам, до 100 ГБ хранилища, резервное копирование данных, API, синхронизация справочников, приоритетная поддержка, обучение по автоматизации процессов</td>
+            <td>Компании, у которых на платформе работают бизнес-процессы</td>
+          </tr>
+          <tr>
+            <td class="plan">Корпоративный («Безоблачный»)</td>
+            <td class="price">от 82 500 ₽ в месяц за компанию</td>
+            <td>Всё из платного, плюс персональный менеджер, установка на серверах клиента, неограниченное хранилище, Active Directory и SSO, SAML, интеграции и доработки под проект</td>
+            <td>Крупные компании и организации с требованиями к внутреннему контуру</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="src">
+        Источники: <a href="https://pyrus.com/en/pricing" target="_blank" rel="noopener" data-out="pricing_official">официальная страница тарифов pyrus.com</a> (состав тарифов; на ней цены указаны в долларах: платный тариф $15 за пользователя в месяц при оплате раз в квартал и со скидкой 20% при оплате за год);
+        рублёвые значения цен приведены по обзорам vc.ru (2026) и toolfox.ru. Перед использованием в расчётах сверьте их на pyrus.com/ru.
+      </p>
+      <div class="actions" style="margin-top:24px">
+        <a class="btn" href="https://pyrus.com/t" target="_blank" rel="noopener" data-out="pricing_register">Начать на pyrus.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ФОРМА -->
+  <section id="demo" class="alt">
+    <div class="container">
+      <h2>Запросить обзорные материалы</h2>
+      <p class="sub">Форма для проверки аналитики в рамках лабораторной работы.</p>
+      <div class="form-box">
+        <form id="leadForm">
+          <label for="name">Имя</label>
+          <input id="name" name="name" type="text" required>
+          <label for="email">Рабочая почта</label>
+          <input id="email" name="email" type="email" required>
+          <label for="role">Должность</label>
+          <select id="role" name="role">
+            <option>Руководитель компании</option>
+            <option>Операционный менеджер</option>
+            <option>Руководитель проектов</option>
+            <option>ИТ-специалист</option>
+            <option>Другое</option>
+          </select>
+          <label for="task">Что нужно автоматизировать</label>
+          <select id="task" name="task">
+            <option>Согласование договоров</option>
+            <option>Заявки сотрудников</option>
+            <option>Обращения клиентов</option>
+            <option>Другой процесс</option>
+          </select>
+          <button class="btn" type="submit">Отправить запрос</button>
+          <p class="note"><b>Важно:</b> это учебная форма. Введённые данные никуда не отправляются, не сохраняются и не передаются компании Pyrus. Используйте тестовые значения. Для реальной регистрации перейдите на <a href="https://pyrus.com/t" target="_blank" rel="noopener" data-out="form_register">pyrus.com</a>.</p>
+        </form>
+        <div id="thanks">
+          <h3>Запрос зарегистрирован в аналитике</h3>
+          <p>Спасибо за участие в тесте. Это учебная страница, реальная заявка не создана.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container" style="max-width:780px">
+      <h2>Частые вопросы</h2>
+      <p class="sub">&nbsp;</p>
+      <details><summary>Нужны ли программисты для настройки?</summary><p>Нет. Платформа позиционируется как low-code: формы и маршруты настраиваются в конструкторе.</p></details>
+      <details><summary>Можно ли установить систему на собственные серверы?</summary><p>Да, такой вариант есть на корпоративном тарифе (on-premise).</p></details>
+      <details><summary>Нужно ли платить за внешних участников, например поставщиков?</summary><p>По данным официальной страницы тарифов, платить нужно только за пользователей своей компании. Приглашённые клиенты и поставщики оплачивают свой доступ сами.</p></details>
+      <details><summary>Что происходит с данными при остановке оплаты?</summary><p>По данным справочного центра Pyrus, данные сохраняются, а ранее созданные задачи доступны в режиме чтения.</p></details>
+    </div>
+  </section>
+</main>
+
+
+
+<script>
+  // ---- Отправка целей в обе системы ----
+  var YM_ID = 00000000; // тот же номер счётчика Метрики
+  function track(goal, params){
+    try{ if (typeof ym === 'function') ym(YM_ID, 'reachGoal', goal, params || {}); }catch(e){}
+    try{ if (typeof gtag === 'function') gtag('event', goal, params || {}); }catch(e){}
+  }
+
+  // 1. Клики по внутренним кнопкам (цель cta_click)
+  document.querySelectorAll('[data-cta]').forEach(function(el){
+    el.addEventListener('click', function(){ track('cta_click', {place: el.getAttribute('data-cta')}); });
+  });
+
+  // 2. Переходы на официальный сайт (цель outbound_click)
+  document.querySelectorAll('[data-out]').forEach(function(el){
+    el.addEventListener('click', function(){ track('outbound_click', {place: el.getAttribute('data-out')}); });
+  });
+
+  // 3. Отправка формы (цель form_submit). Данные нигде не сохраняются.
+  var form = document.getElementById('leadForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    track('form_submit', {
+      role: document.getElementById('role').value,
+      task: document.getElementById('task').value
+    });
+    form.style.display = 'none';
+    document.getElementById('thanks').style.display = 'block';
+  });
+
+  // 4. Скролл 75% страницы (цель scroll_75)
+  var scroll75 = false;
+  window.addEventListener('scroll', function(){
+    if (scroll75) return;
+    var h = document.documentElement;
+    if ((h.scrollTop + window.innerHeight) / h.scrollHeight >= 0.75){ scroll75 = true; track('scroll_75'); }
+  });
+
+  // 5. Просмотр блока с тарифами (цель pricing_view)
+  var pricingSeen = false;
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(en){
+        if (en.isIntersecting && !pricingSeen){ pricingSeen = true; track('pricing_view'); obs.disconnect(); }
+      });
+    }, {threshold:0.4}).observe(document.getElementById('pricing'));
+  }
+</script>
+</body>
+</html>
